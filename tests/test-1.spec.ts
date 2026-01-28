@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('DB新規作成 - frameLocator版', async ({ page }) => {
+test('DB新規作成', async ({ page }) => {
   // ログイン処理
   await page.goto('https://ctr97.smp.ne.jp/login.html', { timeout: 60000 });
   await page.getByRole('textbox', { name: 'アカウント' }).fill('997_maeda');

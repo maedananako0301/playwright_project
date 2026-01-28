@@ -1,8 +1,19 @@
-
 # Playwright
-node_modules/
-/test-results/
-/playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# 環境変数ファイル（機密情報を含む）
+.env
+
+# テスト結果
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Node modules
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
