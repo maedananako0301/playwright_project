@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main, master ]
   schedule:
-    - cron: '25 0 * * *'   # 日本時間 9:25（UTC 0:25）
+    - cron: '30 0 * * *'   # 日本時間 9:30（UTC 0:30）
 jobs:
   test:
     timeout-minutes: 60
