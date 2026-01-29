@@ -23,11 +23,11 @@ jobs:
       run: npx playwright test
     # 環境変数を設定（必要な場合のみ）
     - name: Create .env file
+      if: secrets.PROXY_SERVER != ''
       run: |
         echo "PROXY_SERVER=${{ secrets.PROXY_SERVER }}" >> .env
         echo "PROXY_USERNAME=${{ secrets.PROXY_USERNAME }}" >> .env
         echo "PROXY_PASSWORD=${{ secrets.PROXY_PASSWORD }}" >> .env
-      if: ${{ secrets.PROXY_SERVER != '' }}
     # Chromiumのみでテスト実行
     - name: Run Playwright tests
       run: npx playwright test --project=chromium
