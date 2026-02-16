@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ main, master ]
   schedule:
-    - cron: "30 8 * * *"  # JST 17:30（UTC 08:30）
+    - cron: "50 8 * * *"  # JST 17:30（UTC 08:30）
   workflow_dispatch:      # 手動実行も可能にする
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Create .env file (only if proxy is set)
-        if: ${{ secrets.PROXY_SERVER != '' }}
+        if: ${{ secrets.PROXY_SERVER }}
         run: |
           echo "PROXY_SERVER=${{ secrets.PROXY_SERVER }}" >> .env
           echo "PROXY_USERNAME=${{ secrets.PROXY_USERNAME }}" >> .env
