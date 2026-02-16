@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [ main, master ]
   schedule:
-    - cron: '45 0 * * *'   # 日本時間 9:45（UTC 0:45）
+    - cron: "30 8 * * *"  # JST 17:30（UTC 08:30）
+  workflow_dispatch:      # 手動実行も可能にする
 
 jobs:
   test:
