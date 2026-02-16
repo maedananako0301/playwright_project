@@ -1,3 +1,14 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: "30 8 * * *"
+  workflow_dispatch:
+
 jobs:
   test:
     timeout-minutes: 60
@@ -17,20 +28,18 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Create .env file
-    run: |
-      if [ -n "${{ secrets.PROXY_SERVER }}" ]; then
-        echo "PROXY_SERVER=${{ secrets.PROXY_SERVER }}" >> .env
-        echo "PROXY_USERNAME=${{ secrets.PROXY_USERNAME }}" >> .env
-        echo "PROXY_PASSWORD=${{ secrets.PROXY_PASSWORD }}" >> .env
-      fi
+        run: |
+          if [ -n "${{ secrets.PROXY_SERVER }}" ]; then
+            echo "PROXY_SERVER=${{ secrets.PROXY_SERVER }}" >> .env
+            echo "PROXY_USERNAME=${{ secrets.PROXY_USERNAME }}" >> .env
+            echo "PROXY_PASSWORD=${{ secrets.PROXY_PASSWORD }}" >> .env
+          fi
 
-      # ここを追加
       - name: Check external IP
         run: curl ifconfig.me
 
       - name: Test site connectivity
         run: curl -I https://ctr97.smp.ne.jp/login.html
-      # ここまで
 
       - name: Run Playwright tests (Chromium)
         run: npx playwright test --project=chromium
