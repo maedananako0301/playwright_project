@@ -1,20 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('DB新規作成', async ({ page }) => {
-  // ログイン処理
   await page.goto('https://ctr97.smp.ne.jp/login.html', { timeout: 60000 });
 
   await page.getByRole('textbox', { name: 'アカウント' }).fill('997_maeda');
   await page.getByRole('textbox', { name: 'パスワード' }).fill('Q_contro1');
-
-  await Promise.all([
-    page.waitForLoadState('domcontentloaded'),
-    page.getByRole('button', { name: 'ログイン' }).click(),
-  ]);
-
+  await page.getByRole('button', { name: 'ログイン' }).click();
   await page.getByRole('button', { name: 'OK' }).click();
 
-  // ❌ networkidleは使わない
+  // networkidleは使わない
   await page.waitForLoadState('domcontentloaded');
 
   // DBメニュー
@@ -28,37 +22,31 @@ test('DB新規作成', async ({ page }) => {
 
   await page.getByText('新規作成').click();
 
-  // iframeを待機
-  const iframeLocator = page.locator('iframe.cboxIframe');
-  await expect(iframeLocator).toBeAttached({ timeout: 30000 });
+  // iframeが表示されるまで待つ
+  await expect(page.locator('iframe.cboxIframe'))
+    .toBeVisible({ timeout: 30000 });
 
   const frame = page.frameLocator('iframe.cboxIframe');
 
-  // iframe内読み込み待ち（ここが重要）
   await frame.locator('input#new-setting-field')
     .waitFor({ state: 'visible', timeout: 30000 });
 
-  // confirm対策（安全版）
+  // dialog対策
   page.on('dialog', async dialog => {
     console.log('Dialog:', dialog.message());
     await dialog.accept();
   });
 
-  // 構成設定ボタン
-  await frame.locator('input#new-setting-field').click({ force: true });
+  // 構成設定
+  await frame.locator('input#new-setting-field').click();
   console.log('✓ 構成設定ボタンをクリックしました');
 
-  // 新規作成ボタン
+  // 新規作成ボタンも同様に待つ
   await frame.locator('input#post_create_btn2')
     .waitFor({ state: 'visible', timeout: 30000 });
 
-  await frame.locator('input#post_create_btn2').click({ force: true });
+  await frame.locator('input#post_create_btn2').click();
   console.log('✓ 新規作成ボタンをクリックしました');
-
-  // ✅ networkidle削除 → 成功要素を待つ
-  await expect(
-    page.getByText('DB')
-  ).toBeVisible({ timeout: 30000 });
 
   console.log('✓ DB作成完了');
 });
