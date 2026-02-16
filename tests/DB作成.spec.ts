@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('DB新規作成', async ({ page }) => {
   await page.goto('https://ctr97.smp.ne.jp/login.html', { timeout: 60000 });
 
-  await page.getByRole('textbox', { name: 'アカウント' }).fill('997_maeda');
+  await page.getByRole('textbox', { name: 'アカウント' }).fill('test03');
   await page.getByRole('textbox', { name: 'パスワード' }).fill('Q_contro1');
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.getByRole('button', { name: 'OK' }).click();
@@ -46,9 +46,10 @@ test('DB新規作成', async ({ page }) => {
     .waitFor({ state: 'visible', timeout: 30000 });
 
   await frame.locator('input#post_create_btn2').click();
-  console.log('✓ 新規作成ボタンをクリックしました');
 
-  console.log('✓ DB作成完了');
+  await expect(
+    page.getByRole('heading', { name: '通常DB' })
+  ).toBeVisible({ timeout: 60000 });
 });
 
 
